@@ -48,6 +48,8 @@ while(cap.isOpened()):
     ret, frame = cap.read()
 
     if ret:
+        
+        ####### Parse json to get data  #######
 
         frameNo = '{0:08d}'.format(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
         print(frameNo)
@@ -64,20 +66,19 @@ while(cap.isOpened()):
                 topleft = (int(points_arr[0][0]),int(points_arr[0][1]))
                 bottomright = (int(points_arr[1][0]),int(points_arr[1][1]))
 
-                # print(topleft, bottomright)
-
                 # cv2.rectangle(frame ,topleft, bottomright,(255,0,0), 3)
 
-        low = cv2.getTrackbarPos('Low threshold', 'video')
-        high = cv2.getTrackbarPos('High threshold', 'video')
-
-
-
-
+        ####### Display Midpoint  #######
+        h, w = frame.shape[:2]
+        
+        cv2.circle(frame, (int(w/2), int(h/2)), 30, (255, 255, 255), 3)
         
         ####### Grayscale and Canny Edge detector  #######
 
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # low = cv2.getTrackbarPos('Low threshold', 'video')
+        # high = cv2.getTrackbarPos('High threshold', 'video')
+
+        # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # frame = cv2.GaussianBlur(frame,(31,31),0)
         # frame = cv2.Canny(frame, low, high)
         
@@ -115,10 +116,11 @@ while(cap.isOpened()):
         frame = cv2.warpPerspective(frame, warpMatrix, (3840,2160))
 
         ####### Corner Detection  #######
-        corners = cv2.goodFeaturesToTrack(frame, 30, 0.3, 5, blockSize=3, useHarrisDetector=True, k=0.03)
-        if corners is not None:
-            for i in corners:
-                cv2.circle(frame, tuple(i[0]), 30, (255, 255, 255), 3)
+
+        # corners = cv2.goodFeaturesToTrack(frame, 30, 0.3, 5, blockSize=3, useHarrisDetector=True, k=0.03)
+        # if corners is not None:
+        #     for i in corners:
+        #         cv2.circle(frame, tuple(i[0]), 30, (255, 255, 255), 3)
 
         #################################
         cv2.imshow('video', frame)
